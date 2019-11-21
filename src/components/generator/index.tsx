@@ -27,7 +27,7 @@ class Generator extends Component {
     state: IGenerator = {
         name: rand.arrayValue(names),
         surname: rand.arrayValue(surnames),
-        email: gen.gmail(words),
+        email: gen.gmail(),
         telephone: gen.telephone(),
         street: gen.street(words),
         house: rand.range(1, 75),
@@ -39,7 +39,7 @@ class Generator extends Component {
     };
 
     generatePasportInd = ():string => {
-      return gen.pasportIndificator(this.state.sex, this.state.birthday, this.state.telephone, "TT")  ;
+      return gen.pasportIndificator(this.state.sex, this.state.birthday, this.state.telephone)  ;
     };
 
     render(): React.ReactElement<any, string | React.JSXElementConstructor<any>> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {

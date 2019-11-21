@@ -1,5 +1,5 @@
-export const toTimeNumber = (value: number):string => {
-    return (100 + value).toString().slice(1);
+export const toTimeNumber = (value: number, side: number):string => {
+    return (side + value).toString().slice(1);
 };
 
 export const reformatDate = (date: string):string => {

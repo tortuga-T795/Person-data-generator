@@ -4,9 +4,10 @@ import {toTimeNumber, reformatDate} from "../util/time";
 import {alphabet} from "../assets/alphabet";
 // @ts-ignore
 import {country} from '../assets/country-data';
+// @ts-ignore
+import {words} from '../assets/words';
 
-
-export const gmail = (words: Array<string>):string => {
+export const gmail = ():string => {
     const random = Math.floor(Math.random() * 3);
     const start = rand.arrayValue(words)+'.'+rand.arrayValue(words);
     const end = "@gmail.com";
@@ -21,7 +22,7 @@ export const gmail = (words: Array<string>):string => {
 };
 
 export const telephone = ():string => {
-    return "+"+ +rand.worldNumber()+"("+rand.range(0, 999)+")"+rand.range(0, 999)+"-"+rand.range(0, 99)+"-"+rand.range(0, 99);
+    return "+"+ +rand.worldNumber()+"("+rand.range(0, 999)+")"+toTimeNumber(rand.range(0, 999), 1000)+"-"+toTimeNumber(rand.range(0, 99), 1000)+"-"+toTimeNumber(rand.range(0, 99), 1000);
 };
 
 export const street = (words: Array<string>):string => {
@@ -31,12 +32,12 @@ export const street = (words: Array<string>):string => {
 
 export const date = () => {
     const date = new Date(rand.range(1821, 2019), rand.range(0, 12), rand.range(0, 29));
-    return toTimeNumber(date.getDate())+'.'
-        +toTimeNumber(date.getMonth())+'.'
+    return toTimeNumber(date.getDate(), 100)+'.'
+        +toTimeNumber(date.getMonth(), 100)+'.'
         +date.getFullYear()
 };
 
-export const pasportIndificator = (sex: string, birthday: string, telephone: string, alpha3: string) => {
+export const pasportIndificator = (sex: string, birthday: string, telephone: string) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let century = 0;
     // eslint-disable-next-line eqeqeq
