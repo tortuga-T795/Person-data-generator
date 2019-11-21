@@ -1,4 +1,4 @@
-export const toTimeNumber = (value: number, side: number):string => {
+export const cutNumber = (value: number, side: number):string => {
     return (side + value).toString().slice(1);
 };
 

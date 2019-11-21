@@ -1,5 +1,5 @@
 import * as rand from '../random';
-import {toTimeNumber, reformatDate} from "../util/time";
+import {cutNumber, reformatDate} from "../util/time";
 // @ts-ignore
 import {alphabet} from "../assets/alphabet";
 // @ts-ignore
@@ -22,7 +22,7 @@ export const gmail = ():string => {
 };
 
 export const telephone = ():string => {
-    return "+"+ +rand.worldNumber()+"("+rand.range(0, 999)+")"+toTimeNumber(rand.range(0, 999), 1000)+"-"+toTimeNumber(rand.range(0, 99), 1000)+"-"+toTimeNumber(rand.range(0, 99), 1000);
+    return "+"+ +rand.worldNumber()+"("+rand.range(0, 999)+")"+cutNumber(rand.range(0, 999), 1000)+"-"+cutNumber(rand.range(0, 99), 1000)+"-"+cutNumber(rand.range(0, 99), 1000);
 };
 
 export const street = (words: Array<string>):string => {
@@ -32,8 +32,8 @@ export const street = (words: Array<string>):string => {
 
 export const date = () => {
     const date = new Date(rand.range(1821, 2019), rand.range(0, 12), rand.range(0, 29));
-    return toTimeNumber(date.getDate(), 100)+'.'
-        +toTimeNumber(date.getMonth(), 100)+'.'
+    return cutNumber(date.getDate(), 100)+'.'
+        +cutNumber(date.getMonth(), 100)+'.'
         +date.getFullYear()
 };
 
@@ -47,10 +47,16 @@ export const pasportIndificator = (sex: string, birthday: string, telephone: str
     } else if((+birthday.slice(6) > 1800 && +birthday.slice(6) < 1991) && sex == "female") {
         century = 2;
         // eslint-disable-next-line eqeqeq
-    } else if(sex == "male") {
+    } else if((+birthday.slice(6) > 1900 && +birthday.slice(6) < 2000) && sex == "female") {
         century = 3;
-    } else {
+        // eslint-disable-next-line eqeqeq
+    } else if((+birthday.slice(6) > 1900 && +birthday.slice(6) < 2000) && sex == "female") {
         century = 4;
+        // eslint-disable-next-line eqeqeq
+    } else if(sex == "male") {
+        century = 5;
+    } else {
+        century = 6;
     }
     let iso = 0;
     for(let i = 1; i < 251; ++i) {
@@ -58,7 +64,7 @@ export const pasportIndificator = (sex: string, birthday: string, telephone: str
         if(country[i].iso == telephone.slice(1,4))
             iso = country[i].alpha3;
     }
-    const amount = (1000+rand.range(0, 112)).toString().slice(1);
+    const amount = cutNumber(rand.range(0, 112),1000);
     return century+reformatDate(birthday)+alphabet[rand.range(0, alphabet.length)]+amount+iso+rand.range(0,9);
 };
 
