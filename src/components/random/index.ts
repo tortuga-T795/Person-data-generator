@@ -7,15 +7,9 @@ export const arrayValue = (list: Array<string>):string => {
 };
 
 export const worldNumber = ():string => {
-    let result = undefined;
-    while (result === undefined) {
-        let numb = Math.floor(Math.random() * Math.floor(250));
-        // eslint-disable-next-line eqeqeq
-        result = country[Object.keys(country).find(el => +el == numb)].iso;
-    }
-    return result;
+    return country[range(1, 250)].iso
 };
 
-export const range = (min: number, max: number):number =>{
+export const range = (min: number, max: number):number => {
     return Math.floor(Math.random() * (max - min) + min);
 };
