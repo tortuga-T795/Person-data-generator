@@ -1,70 +1,64 @@
-import * as rand from '../random';
-import {cutNumber, reformatDate} from "../util/time";
 // @ts-ignore
-import {alphabet} from "../assets/alphabet";
+import {alphabet} from "../../assets/alphabet";
 // @ts-ignore
-import {country} from '../assets/country-data';
+import {country} from '../../assets/country-data';
 // @ts-ignore
-import {words} from '../assets/words';
+import {words} from '../../assets/words';
+// @ts-ignore
+import {names} from '../../assets/names';
+// @ts-ignore
+import {surnames} from '../../assets/surnames';
+import * as pasport from "./pasport";
+import * as rand from './random';
+import {dateFormat, reformatDate} from "./time";
+import {cutNumber} from "./functionality";
 
 export const gmail = ():string => {
-    const random = Math.floor(Math.random() * 3);
-    const start = rand.arrayValue(words)+'.'+rand.arrayValue(words);
+    const start = rand.valueFromArray(words)+'.'+rand.valueFromArray(words);
     const end = "@gmail.com";
-    switch (random) {
-        case 1:
-            return start + end;
-        case 2:
-            return start+'.'+rand.arrayValue(words)+end;
-        default:
-            return start+'.'+rand.arrayValue(words)+'.'+rand.arrayValue(words)+end;
-    }
+    return  rand.range(0, 2) ? start + end : start+'.'+rand.valueFromArray(words)+end;
 };
 
-export const telephone = ():string => {
-    return "+"+ +rand.worldNumber()+"("+rand.range(0, 999)+")"+cutNumber(rand.range(0, 999), 1000)+"-"+cutNumber(rand.range(0, 99), 1000)+"-"+cutNumber(rand.range(0, 99), 1000);
+export const telephone = (): string => {
+    const prefix = rand.range(12, 75);
+    const number = rand.range(1111111, 9999999).toString();
+    const iso = rand.worldNumber();
+    return `+${iso}(${prefix})${number.slice(0, 3)}-${number.slice(3, 5)}-${number.slice(5, 7)}`;
 };
 
-export const street = (words: Array<string>):string => {
-    const street = rand.arrayValue(words);
+export const street = (): string => {
+    const street = rand.valueFromArray(words);
     return street.slice(0, 1).toUpperCase() + street.slice(1) + " street";
 };
 
-export const date = () => {
-    const date = new Date(rand.range(1821, 2019), rand.range(0, 12), rand.range(0, 29));
-    return cutNumber(date.getDate(), 100)+'.'
-        +cutNumber(date.getMonth(), 100)+'.'
-        +date.getFullYear()
+export const date = (): any => {
+    const date = new Date(rand.range(1941, 2003), rand.range(1, 12), rand.range(1, 29));
+    return {birthday: dateFormat(date), age: new Date().getFullYear() - date.getFullYear()};
 };
 
-export const pasportIndificator = (sex: string, birthday: string, telephone: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    let century = 0;
-    // eslint-disable-next-line eqeqeq
-    if((+birthday.slice(6) > 1800 && +birthday.slice(6) < 1991) && sex == "male"){
-        century = 1;
-        // eslint-disable-next-line eqeqeq
-    } else if((+birthday.slice(6) > 1800 && +birthday.slice(6) < 1991) && sex == "female") {
-        century = 2;
-        // eslint-disable-next-line eqeqeq
-    } else if((+birthday.slice(6) > 1900 && +birthday.slice(6) < 2000) && sex == "female") {
-        century = 3;
-        // eslint-disable-next-line eqeqeq
-    } else if((+birthday.slice(6) > 1900 && +birthday.slice(6) < 2000) && sex == "female") {
-        century = 4;
-        // eslint-disable-next-line eqeqeq
-    } else if(sex == "male") {
-        century = 5;
-    } else {
-        century = 6;
-    }
-    let iso = 0;
-    for(let i = 1; i < 251; ++i) {
-        // eslint-disable-next-line eqeqeq
-        if(country[i].iso == telephone.slice(1,4))
-            iso = country[i].alpha3;
-    }
+export const pasportIndificator = (sex: string, birthday: string, telephone: string): string => {
     const amount = cutNumber(rand.range(0, 112),1000);
-    return century+reformatDate(birthday)+alphabet[rand.range(0, alphabet.length)]+amount+iso+rand.range(0,9);
+    const century = pasport.century(birthday, sex);
+    const alpha3 =  pasport.alpha3(country, telephone);
+    const date = reformatDate(birthday);
+    const city = alphabet[rand.range(0, alphabet.length)];
+    const number = rand.range(0,9);
+    return century+date+city+amount+alpha3+number;
 };
 
+export const content = (): any => {
+    const {birthday, age} = date();
+    return {
+        name: rand.valueFromArray(names),
+        surname: rand.valueFromArray(surnames),
+        email: gmail(),
+        telephone: telephone(),
+        street: street(),
+        house: rand.range(1, 75),
+        sex: rand.range(-1, 1) ? "male" : "female",
+        age,
+        height: rand.range(150, 210) + "cm",
+        weight: rand.range(55, 80) + "kg",
+        birthday,
+    };
+}

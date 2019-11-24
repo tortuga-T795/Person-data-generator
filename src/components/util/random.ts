@@ -1,7 +1,7 @@
 // @ts-ignore
-import {country} from '../assets/country-data';
+import {country} from '../../assets/country-data';
 
-export const arrayValue = (list: Array<string>):string => {
+export const valueFromArray = (list: Array<string>):string => {
     const number = Math.floor(Math.random() * Math.floor(list.length));
     return list[number];
 };

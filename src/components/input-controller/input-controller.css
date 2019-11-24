@@ -1,0 +1,13 @@
+.ui {
+    flex: none;
+    color: #000000;
+    border: 1px solid #ee0667;
+    box-shadow: 0 2px 3px #cc0074;
+    background-color: #fff9f2;
+    border-radius: 10px;
+    outline: #cc0074 !important;
+    cursor: pointer;
+    font: bold 140% Impact;
+    text-align: center;
+    box-sizing: border-box;
+}
