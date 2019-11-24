@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
 import Generator from './components/generator/generator'
-//@ts-ignore
-import {connect} from 'react-redux';
 
 class App extends Component {
 
@@ -15,6 +13,4 @@ class App extends Component {
     }
 }
 
-export default connect(
-
-)(App);
+export default App;

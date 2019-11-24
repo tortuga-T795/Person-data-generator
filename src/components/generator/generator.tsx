@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-// @ts-ignore
-import {connect} from 'react-redux';
 import './generator.css';
 import ContentTable from "../content/content-table/content-table";
 import {copy} from "../util/functionality";
@@ -50,4 +48,4 @@ class Generator extends Component {
     }
 }
 
-export default connect()(Generator);
+export default Generator;
